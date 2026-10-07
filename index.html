@@ -1,673 +1,1007 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Amine Zerouati — Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Amine Zerouati — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 
-    :root {
-      --bg: #0f0f0f;
-      --bg2: #161616;
-      --bg3: #1e1e1e;
-      --border: #2a2a2a;
-      --text: #e8e4dc;
-      --muted: #6b6b6b;
-      --accent: #c8b89a;
-      --accent2: #8fa8c8;
-      --red: #c87a6a;
+<style>
+  /* ── Design tokens ─────────────────────────────────────── */
+  /* Layout: full-width sticky nav, hero with stats counter, numbered sections */
+  :root {
+    --bg:        #0a0e1a;
+    --bg2:       #111827;
+    --bg3:       #1a2235;
+    --fg:        #e8eaf2;
+    --fg2:       #9aa3b8;
+    --accent:    #3b82f6;
+    --accent2:   #60a5fa;
+    --border:    rgba(59,130,246,0.18);
+    --tag-bg:    rgba(59,130,246,0.12);
+    --tag-fg:    #60a5fa;
+    --green:     #22c55e;
+    --radius:    10px;
+    --font-body: 'Space Grotesk', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    color-scheme: dark;
+  }
+
+  /* Light theme */
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg:     #f8fafc;
+      --bg2:    #ffffff;
+      --bg3:    #f1f5f9;
+      --fg:     #0f172a;
+      --fg2:    #475569;
+      --accent: #2563eb;
+      --accent2:#3b82f6;
+      --border: rgba(37,99,235,0.15);
+      --tag-bg: rgba(37,99,235,0.08);
+      --tag-fg: #2563eb;
+      --green:  #16a34a;
+      color-scheme: light;
     }
+  }
+  :root[data-theme="light"] {
+    --bg:     #f8fafc;
+    --bg2:    #ffffff;
+    --bg3:    #f1f5f9;
+    --fg:     #0f172a;
+    --fg2:    #475569;
+    --accent: #2563eb;
+    --accent2:#3b82f6;
+    --border: rgba(37,99,235,0.15);
+    --tag-bg: rgba(37,99,235,0.08);
+    --tag-fg: #2563eb;
+    --green:  #16a34a;
+    color-scheme: light;
+  }
 
-    html { scroll-behavior: smooth; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-inline: 16px;
+    padding-block: env(safe-area-inset-top, 0px) env(safe-area-inset-bottom, 0px);
+  }
 
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 1.2rem 4rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(15,15,15,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
+  /* ── NAV ──────────────────────────────────────────────── */
+  nav {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 100;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 clamp(16px, 4vw, 64px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
 
-    .nav-logo {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      text-decoration: none;
-    }
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--accent2);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
 
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
 
-    .nav-links a {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
+  .nav-links a {
+    color: var(--fg2);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
 
-    .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover { color: var(--fg); }
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 8rem 4rem 4rem;
-      position: relative;
-      overflow: hidden;
-    }
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -200px; right: -200px;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(200,184,154,0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
+  .btn-theme {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--fg2);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+  }
+  .btn-theme:hover { color: var(--fg); border-color: var(--accent); }
 
-    .hero-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 2rem;
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+  }
+
+  /* ── LAYOUT ────────────────────────────────────────────── */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  section {
+    padding-block: 72px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2rem);
+    font-weight: 700;
+    color: var(--fg);
+    margin-bottom: 40px;
+    text-wrap: balance;
+  }
+
+  /* ── HERO ─────────────────────────────────────────────── */
+  #hero {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.3);
+    color: var(--green);
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+  }
+
+  .badge::before {
+    content: '';
+    width: 7px; height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    text-wrap: balance;
+  }
+
+  .hero-title span { color: var(--accent2); }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--fg2);
+    max-width: 520px;
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 56px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    padding: 11px 24px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: var(--bg3);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    padding: 11px 24px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+  /* Stats row */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .stat-card {
+    background: var(--bg2);
+    padding: 20px 24px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: var(--font-mono);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent2);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--fg2);
+    margin-top: 6px;
+    line-height: 1.3;
+  }
+
+  /* ── ABOUT ────────────────────────────────────────────── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  @media (max-width: 640px) {
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  .about-text p {
+    color: var(--fg2);
+    margin-bottom: 16px;
+    line-height: 1.75;
+  }
+
+  .info-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .info-list li {
+    display: flex;
+    gap: 10px;
+    font-size: 0.9rem;
+  }
+
+  .info-list .label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent2);
+    background: var(--tag-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  .info-list .value { color: var(--fg2); }
+
+  /* ── BTS SIO SISR / SLAM ──────────────────────────────── */
+  .bts-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 600px) {
+    .bts-cards { grid-template-columns: 1fr; }
+  }
+
+  .bts-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: border-color 0.2s;
+  }
+
+  .bts-card:hover { border-color: var(--accent); }
+  .bts-card.active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--bg2)); }
+
+  .bts-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--fg);
+    margin-bottom: 6px;
+  }
+
+  .bts-card p {
+    font-size: 0.85rem;
+    color: var(--fg2);
+    line-height: 1.6;
+  }
+
+  .bts-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background: var(--tag-bg);
+    color: var(--tag-fg);
+  }
+
+  /* ── SKILLS ───────────────────────────────────────────── */
+  .skills-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .skill-group h3 {
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--fg2);
+    margin-bottom: 14px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    background: var(--tag-bg);
+    color: var(--tag-fg);
+    border: 1px solid rgba(59,130,246,0.2);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+    transition: background 0.15s;
+    cursor: default;
+  }
+
+  .tag:hover { background: rgba(59,130,246,0.2); }
+
+  /* ── EXPERIENCE / STAGE ────────────────────────────────── */
+  .exp-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 16px;
+  }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .exp-title { font-size: 1rem; font-weight: 700; color: var(--fg); }
+  .exp-company { font-size: 0.875rem; color: var(--accent2); font-weight: 600; }
+
+  .exp-period {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--fg2);
+    background: var(--bg3);
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .exp-missions {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .exp-missions li {
+    display: flex;
+    gap: 10px;
+    font-size: 0.88rem;
+    color: var(--fg2);
+    line-height: 1.5;
+  }
+
+  .exp-missions li::before {
+    content: '→';
+    color: var(--accent2);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── FORMATIONS (AP) ────────────────────────────────────── */
+  .ap-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ap-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 20px 24px;
+    transition: border-color 0.2s;
+  }
+
+  .ap-card:hover { border-color: var(--accent2); }
+
+  .ap-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 6px;
+  }
+
+  .ap-desc {
+    font-size: 0.85rem;
+    color: var(--fg2);
+    line-height: 1.6;
+  }
+
+  .comp-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .comp-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(59,130,246,0.08);
+    color: var(--accent2);
+    border: 1px solid rgba(59,130,246,0.15);
+  }
+
+  /* ── E5 TABLE ───────────────────────────────────────────── */
+  .e5-table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    min-width: 600px;
+  }
+
+  thead th {
+    background: var(--bg3);
+    color: var(--fg2);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+
+  tbody td {
+    padding: 12px 14px;
+    color: var(--fg2);
+    vertical-align: top;
+  }
+
+  tbody td:first-child { color: var(--fg); font-weight: 500; }
+
+  .check { color: var(--accent2); font-weight: 700; }
+
+  /* ── CONTACT ────────────────────────────────────────────── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  @media (max-width: 640px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+
+  .contact-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .contact-icon {
+    width: 38px; height: 38px;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    color: var(--accent2);
+  }
+
+  .contact-label { font-size: 0.75rem; color: var(--fg2); margin-bottom: 2px; }
+  .contact-value { font-size: 0.9rem; color: var(--fg); font-weight: 500; }
+  .contact-value a { color: var(--accent2); text-decoration: none; }
+  .contact-value a:hover { text-decoration: underline; }
+
+  /* ── FOOTER ─────────────────────────────────────────────── */
+  footer {
+    padding-block: 32px;
+    text-align: center;
+    color: var(--fg2);
+    font-size: 0.8rem;
+  }
+
+  footer span { color: var(--accent2); font-family: var(--font-mono); }
+
+  /* ── SCROLL REVEAL ──────────────────────────────────────── */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
       opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.2s;
+      transform: translateY(18px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
+    .reveal.visible { opacity: 1; transform: none; }
+  }
+</style>
 
-    .hero h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(3.5rem, 8vw, 7rem);
-      line-height: 1.05;
-      font-weight: 400;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.4s;
-    }
+<!-- ── NAV ─────────────────────────────────────────────────── -->
+<nav>
+  <a href="#" class="nav-logo">&lt;AZ/&gt;</a>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#bts">BTS SIO</a></li>
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#experience">Expérience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-theme" onclick="toggleTheme()" aria-label="Changer de thème">☀ / ☾</button>
+  </div>
+</nav>
 
-    .hero h1 em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .hero-sub {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 500px;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.6s;
-    }
-
-    .hero-badges {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 0.8s;
-    }
-
-    .badge {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      padding: 0.4rem 1rem;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .hero-scroll {
-      position: absolute;
-      bottom: 3rem;
-      left: 4rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards 1.2s;
-    }
-
-    .hero-scroll::before {
-      content: '';
-      width: 40px;
-      height: 1px;
-      background: var(--muted);
-    }
-
-    /* SECTIONS */
-    section {
-      padding: 6rem 4rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 3rem;
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .section-label::after {
-      content: '';
-      flex: 1;
-      max-width: 60px;
-      height: 1px;
-      background: var(--border);
-    }
-
-    h2 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 400;
-      line-height: 1.1;
-      margin-bottom: 2rem;
-    }
-
-    /* A PROPOS */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-
-    .about-text p {
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-      font-size: 1rem;
-    }
-
-    .about-text p strong {
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    .about-info {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .info-item {
-      padding: 1.5rem;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-    }
-
-    .info-item .label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-
-    .info-item .value {
-      font-size: 0.95rem;
-      color: var(--text);
-    }
-
-    /* BTS */
-    .bts-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .bts-card {
-      padding: 2rem;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.2s;
-    }
-
-    .bts-card:hover { border-color: var(--accent); }
-
-    .bts-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 100%;
-    }
-
-    .bts-card.sisr::before { background: var(--accent); }
-    .bts-card.slam::before { background: var(--accent2); }
-
-    .bts-card h3 {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.8rem;
-      color: var(--text);
-    }
-
-    .bts-card p {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .bts-intro {
-      color: var(--muted);
-      max-width: 700px;
-      margin-bottom: 1rem;
-    }
-
-    /* COMPETENCES */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .skill-group {
-      padding: 2rem;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-    }
-
-    .skill-group h3 {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .skill-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-    }
-
-    .skill-list li {
-      font-size: 0.88rem;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-
-    .skill-list li::before {
-      content: '→';
-      color: var(--accent);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-    }
-
-    /* VEILLE */
-    .veille-container {
-      margin-top: 2rem;
-    }
-
-    .veille-header {
-      padding: 2.5rem;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-bottom: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .veille-header h3 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.8rem;
-      font-weight: 400;
-    }
-
-    .veille-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      padding: 0.4rem 0.8rem;
-      background: rgba(200,122,106,0.1);
-      border: 1px solid var(--red);
-      color: var(--red);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .veille-body {
-      padding: 2.5rem;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-top: none;
-    }
-
-    .veille-intro {
-      color: var(--muted);
-      margin-bottom: 2.5rem;
-      font-size: 0.95rem;
-      max-width: 700px;
-    }
-
-    .veille-sections {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-
-    .veille-section h4 {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
-    .veille-section p, .veille-section li {
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .veille-section ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .veille-section ul li::before {
-      content: '— ';
-      color: var(--accent);
-    }
-
-    .exemples-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .exemple-card {
-      padding: 1.2rem;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-    }
-
-    .exemple-card .nom {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--red);
-      margin-bottom: 0.4rem;
-    }
-
-    .exemple-card .annee {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--muted);
-      margin-bottom: 0.6rem;
-    }
-
-    .exemple-card p {
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .etat-lieux {
-      margin-top: 2rem;
-      padding: 2rem;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-    }
-
-    .etat-lieux h4 {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
-    .etat-lieux p {
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    /* FOOTER */
-    footer {
-      padding: 3rem 4rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    footer p {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-    }
-
-    footer a {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--accent);
-      text-decoration: none;
-      letter-spacing: 0.06em;
-      transition: opacity 0.2s;
-    }
-
-    footer a:hover { opacity: 0.7; }
-
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
-      .hero, section { padding: 5rem 1.5rem 3rem; }
-      .about-grid, .bts-grid, .skills-grid, .veille-sections, .exemples-grid { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 1rem; text-align: center; }
-    }
-  </style>
-</head>
-<body>
-
-  <nav>
-    <a href="#" class="nav-logo">AZ — Portfolio</a>
-    <ul class="nav-links">
-      <li><a href="#apropos">À propos</a></li>
-      <li><a href="#bts">BTS SIO</a></li>
-      <li><a href="#competences">Compétences</a></li>
-      
-    </ul>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero" id="top">
-    <p class="hero-tag">Portfolio — BTS SIO SISR · 2025–2026</p>
-    <h1>Amine<br><em>Zerouati</em></h1>
-    <p class="hero-sub">Étudiant en BTS SIO option SISR au lycée Parc de Vilgénis, Massy. Passionné par les infrastructures réseau et la cybersécurité.</p>
-    <div class="hero-badges">
-      <span class="badge">Réseau</span>
-      <span class="badge">Linux</span>
-      <span class="badge">Cybersécurité</span>
-      <span class="badge">Administration système</span>
+<!-- ── HERO ────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="container">
+    <div class="badge">Disponible — BTS SIO SISR 2e année</div>
+    <h1 class="hero-title">
+      Amine <span>Zerouati</span><br>
+      Technicien réseaux &amp; systèmes
+    </h1>
+    <p class="hero-sub">
+      Étudiant en BTS SIO option SISR au Lycée Parc de Vilgénis, Massy.
+      Passionné par les infrastructures réseau, la sécurité et l'administration système Linux.
+    </p>
+    <div class="hero-btns">
+      <a href="#experience" class="btn-primary">Voir mon expérience</a>
+      <a href="https://github.com/Amine-Zerouati" target="_blank" rel="noopener" class="btn-secondary">GitHub →</a>
     </div>
-    <p class="hero-scroll">Défiler pour découvrir</p>
-  </section>
 
-  <!-- À PROPOS -->
-  <section id="apropos">
-    <p class="section-label fade-in">01 — À propos</p>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num" data-count="5">0</div>
+        <div class="stat-label">Projets réseau<br>réalisés</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" data-count="1">0</div>
+        <div class="stat-label">Stage en entreprise<br>Worldline</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" data-count="3">0</div>
+        <div class="stat-label">Protocoles FHRP<br>maîtrisés</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" data-count="10">0</div>
+        <div class="stat-label">Compétences<br>techniques</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── À PROPOS ────────────────────────────────────────────── -->
+<section id="about">
+  <div class="container reveal">
+    <p class="section-eyebrow">// 01 — Présentation</p>
+    <h2 class="section-title">À propos de moi</h2>
     <div class="about-grid">
-      <div class="about-text fade-in">
-        <h2><em style="font-family:'DM Serif Display',serif;font-style:italic;color:var(--accent)">Présentation</em></h2>
-        <p>Je suis <strong>Amine Zerouati</strong>, étudiant en première année de BTS SIO option SISR au lycée Parc de Vilgénis à Massy.</p>
-        <p>Je me forme aux métiers des <strong>infrastructures et réseaux</strong> — administration de serveurs Linux, configuration d'équipements réseau, sécurisation des systèmes d'information.</p>
-        <p>Ce portfolio présente mon parcours, mes compétences acquises et ma veille technologique sur les <strong>ransomwares et la protection des systèmes d'information</strong>.</p>
+      <div class="about-text">
+        <p>
+          Je suis étudiant en BTS SIO option SISR au Lycée Parc de Vilgénis à Massy.
+          Ma spécialité : les infrastructures réseau, l'administration système et la sécurité informatique.
+        </p>
+        <p>
+          J'ai effectué mon stage de 1ère année chez <strong>Worldline</strong>, leader européen des paiements,
+          où j'ai intégré l'équipe Service IT. J'y ai configuré des postes, géré des tickets via ServiceNow
+          et préparé des salles de réunion MTR.
+        </p>
+        <p>
+          Je construis mes projets avec une approche pratique : GNS3, VirtualBox, Debian, Cisco IOS —
+          je préfère apprendre par la mise en œuvre concrète.
+        </p>
       </div>
-      <div class="about-info fade-in">
-        <div class="info-item">
-          <p class="label">Formation</p>
-          <p class="value">BTS SIO — option SISR</p>
-        </div>
-        <div class="info-item">
-          <p class="label">Établissement</p>
-          <p class="value">Lycée Parc de Vilgénis, Massy</p>
-        </div>
-        <div class="info-item">
-          <p class="label">Année</p>
-          <p class="value">1ère année — 2025/2026</p>
-        </div>
-        <div class="info-item">
-          <p class="label">GitHub</p>
-          <p class="value"><a href="https://github.com/Amine-Zerouati" target="_blank" style="color:var(--accent);text-decoration:none;">github.com/Amine-Zerouati</a></p>
-        </div>
-      </div>
+      <ul class="info-list">
+        <li>
+          <span class="label">formation</span>
+          <span class="value">BTS SIO SISR — Lycée Parc de Vilgénis, Massy</span>
+        </li>
+        <li>
+          <span class="label">promotion</span>
+          <span class="value">2025 – 2027</span>
+        </li>
+        <li>
+          <span class="label">précédent</span>
+          <span class="value">BUT GIM — IUT Sénart-Fontainebleau, Lieusaint (2024–2025)</span>
+        </li>
+        <li>
+          <span class="label">stage</span>
+          <span class="value">Worldline — Support IT (juin–juillet 2026)</span>
+        </li>
+        <li>
+          <span class="label">github</span>
+          <span class="value"><a href="https://github.com/Amine-Zerouati" target="_blank" rel="noopener" style="color:var(--accent2)">Amine-Zerouati</a></span>
+        </li>
+        <li>
+          <span class="label">localisation</span>
+          <span class="value">Longpont-sur-Orge, Essonne</span>
+        </li>
+      </ul>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- BTS SIO -->
-  <section id="bts">
-    <p class="section-label fade-in">02 — Filière</p>
-    <h2 class="fade-in">BTS <em style="font-family:'DM Serif Display',serif;font-style:italic;color:var(--accent)">SIO</em></h2>
-    <p class="bts-intro fade-in">Le BTS Services Informatiques aux Organisations forme des techniciens supérieurs capables de gérer et sécuriser les systèmes d'information des entreprises. Il se décline en deux options complémentaires.</p>
-    <div class="bts-grid fade-in">
-      <div class="bts-card sisr">
-        <h3>SISR — Solutions d'Infrastructure, Systèmes et Réseaux</h3>
-        <p>Option que je suis. Elle forme à l'administration des réseaux, la gestion des serveurs, la sécurisation des infrastructures et la maintenance des systèmes. Les débouchés sont administrateur réseau, technicien système, responsable sécurité.</p>
+<!-- ── BTS SIO ──────────────────────────────────────────────── -->
+<section id="bts">
+  <div class="container reveal">
+    <p class="section-eyebrow">// 02 — Formation</p>
+    <h2 class="section-title">BTS SIO</h2>
+    <div class="bts-cards">
+      <div class="bts-card active">
+        <div class="bts-badge">Mon option</div>
+        <h3>SISR</h3>
+        <p>Solutions d'Infrastructure, Systèmes et Réseaux. Administration réseau, sécurité, virtualisation, services système.</p>
       </div>
-      <div class="bts-card slam">
-        <h3>SLAM — Solutions Logicielles et Applications Métiers</h3>
-        <p>Cette option forme au développement d'applications, à la gestion de bases de données et à l'intégration de solutions logicielles. Les débouchés sont développeur, analyste programmeur, intégrateur d'applications.</p>
+      <div class="bts-card">
+        <div class="bts-badge">Autre option</div>
+        <h3>SLAM</h3>
+        <p>Solutions Logicielles et Applications Métiers. Développement d'applications, bases de données, web.</p>
       </div>
     </div>
-    <div style="margin-top:2rem;padding:1.5rem 2rem;background:var(--bg2);border:1px solid var(--border);max-width:700px;" class="fade-in">
-      <p style="font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.6rem;">Débouchés après le BTS</p>
-      <p style="font-size:0.88rem;color:var(--muted);">Poursuite en licence pro, bachelor, école d'ingénieur en informatique / réseaux / cybersécurité. Ou entrée directe en entreprise comme technicien réseau, administrateur système, technicien support N2/N3.</p>
-    </div>
-  </section>
 
-  <!-- COMPETENCES -->
-  <section id="competences">
-    <p class="section-label fade-in">03 — Compétences</p>
-    <h2 class="fade-in">Ce que<br><em style="font-family:'DM Serif Display',serif;font-style:italic;color:var(--accent)">je maîtrise</em></h2>
-    <div class="skills-grid fade-in">
+    <div class="ap-list">
+      <div class="ap-card">
+        <div class="ap-title">Projet Keycloak — Extension d'architecture réseau</div>
+        <div class="ap-desc">
+          Déploiement d'un serveur d'authentification Keycloak sur VM Debian 13 dans un réseau segmenté en VLANs.
+          Conception de la table d'adressage VLSM, configuration du routeur Cisco 3725, sécurisation SSH/UFW/Fail2ban.
+        </div>
+        <div class="comp-row">
+          <span class="comp-tag">VLSM</span>
+          <span class="comp-tag">Cisco IOS</span>
+          <span class="comp-tag">Debian 13</span>
+          <span class="comp-tag">UFW</span>
+          <span class="comp-tag">Fail2ban</span>
+          <span class="comp-tag">Keycloak 26</span>
+          <span class="comp-tag">GNS3</span>
+        </div>
+      </div>
+      <div class="ap-card">
+        <div class="ap-title">Présentation FHRP — Protocoles de redondance</div>
+        <div class="ap-desc">
+          Présentation en groupe sur les protocoles FHRP (HSRP, VRRP, GLBP). Démonstration pratique sur Packet Tracer avec configuration HSRP actif/standby.
+        </div>
+        <div class="comp-row">
+          <span class="comp-tag">HSRP</span>
+          <span class="comp-tag">VRRP</span>
+          <span class="comp-tag">GLBP</span>
+          <span class="comp-tag">Packet Tracer</span>
+          <span class="comp-tag">Haute disponibilité</span>
+        </div>
+      </div>
+      <div class="ap-card">
+        <div class="ap-title">Portfolio professionnel HTML/CSS</div>
+        <div class="ap-desc">
+          Conception et déploiement d'un portfolio personnel sur GitHub Pages. Gestion de version avec Git, publication via GitHub Actions.
+        </div>
+        <div class="comp-row">
+          <span class="comp-tag">HTML/CSS</span>
+          <span class="comp-tag">GitHub Pages</span>
+          <span class="comp-tag">Git</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMPÉTENCES ─────────────────────────────────────────── -->
+<section id="skills">
+  <div class="container reveal">
+    <p class="section-eyebrow">// 03 — Compétences</p>
+    <h2 class="section-title">Compétences techniques</h2>
+    <div class="skills-groups">
       <div class="skill-group">
         <h3>Réseau</h3>
-        <ul class="skill-list">
-          <li>Conception d'architecture VLSM</li>
-          <li>Adressage IP et sous-réseaux</li>
-          <li>Configuration routeur Cisco IOS</li>
-          <li>DHCP, DNS</li>
-          <li>Simulation réseau GNS3</li>
-          <li>Topologies logique et physique</li>
-        </ul>
+        <div class="tags">
+          <span class="tag">VLSM / CIDR</span>
+          <span class="tag">Cisco IOS</span>
+          <span class="tag">GNS3</span>
+          <span class="tag">Routage statique</span>
+          <span class="tag">DHCP</span>
+          <span class="tag">HSRP / VRRP / GLBP</span>
+          <span class="tag">VLAN</span>
+        </div>
       </div>
       <div class="skill-group">
-        <h3>Système Linux</h3>
-        <ul class="skill-list">
-          <li>Administration Debian 13</li>
-          <li>Configuration SSH</li>
-          <li>Gestion des utilisateurs</li>
-          <li>Pare-feu UFW</li>
-          <li>Fail2ban</li>
-          <li>Déploiement de services</li>
-        </ul>
+        <h3>Système &amp; Sécurité</h3>
+        <div class="tags">
+          <span class="tag">Debian 13</span>
+          <span class="tag">VirtualBox</span>
+          <span class="tag">SSH</span>
+          <span class="tag">UFW</span>
+          <span class="tag">Fail2ban</span>
+          <span class="tag">Keycloak</span>
+          <span class="tag">Java / OpenJDK</span>
+        </div>
       </div>
       <div class="skill-group">
-        <h3>Outils</h3>
-        <ul class="skill-list">
-          <li>GNS3</li>
-          <li>VirtualBox</li>
-          <li>Draw.io</li>
-          <li>LibreOffice</li>
-          <li>GitHub</li>
-          <li>Nano / CLI Linux</li>
-        </ul>
+        <h3>Outils &amp; Méthodes</h3>
+        <div class="tags">
+          <span class="tag">GitHub / Git</span>
+          <span class="tag">Draw.io</span>
+          <span class="tag">ServiceNow</span>
+          <span class="tag">Microsoft Intune</span>
+          <span class="tag">Packet Tracer</span>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  
+<!-- ── EXPÉRIENCE ──────────────────────────────────────────── -->
+<section id="experience">
+  <div class="container reveal">
+    <p class="section-eyebrow">// 04 — Expérience professionnelle</p>
+    <h2 class="section-title">Stage &amp; Expériences</h2>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2026 Amine Zerouati — BTS SIO SISR</p>
-    <a href="https://github.com/Amine-Zerouati" target="_blank">github.com/Amine-Zerouati →</a>
-  </footer>
+    <div class="exp-card">
+      <div class="exp-header">
+        <div>
+          <div class="exp-title">Technicien Support IT</div>
+          <div class="exp-company">Worldline — Leader européen des paiements</div>
+        </div>
+        <div class="exp-period">01/06/2026 → 03/07/2026</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--fg2);line-height:1.6;">
+        Stage de 1ère année au sein de l'équipe Service IT. Intégration dans un environnement d'entreprise internationale (fintech, ~15 000 employés).
+      </p>
+      <ul class="exp-missions">
+        <li>Déploiement et configuration de postes de travail via clé USB Windows, procédure BIOS et Autopilot</li>
+        <li>Gestion et résolution de tickets utilisateurs via ServiceNow (SLA, suivi, escalade)</li>
+        <li>Installation et configuration de salles de réunion MTR (Teams Room, enceintes, micros, caméra, baie de brassage)</li>
+        <li>Remplacement de batteries PC portables et diagnostic matériel</li>
+        <li>Accompagnement des nouveaux arrivants (configuration PC, création de comptes)</li>
+        <li>Utilisation quotidienne de Microsoft Intune, Entra ID, Uniflow (impression), SSO</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-  <script>
-    // Intersection Observer pour les animations
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
+<!-- ── E5 ──────────────────────────────────────────────────── -->
+<section id="e5">
+  <div class="container reveal">
+    <p class="section-eyebrow">// 05 — Épreuve E5</p>
+    <h2 class="section-title">Tableau de synthèse E5</h2>
+    <div class="e5-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Réalisation</th>
+            <th>Période</th>
+            <th title="Gérer le patrimoine informatique">C</th>
+            <th title="Répondre aux incidents">D</th>
+            <th title="Développer la présence en ligne">E</th>
+            <th title="Travailler en mode projet">F</th>
+            <th title="Mettre à disposition un service">G</th>
+            <th title="Organiser son développement professionnel">H</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Projet Keycloak — Filtrage réseau &amp; pare-feu</td>
+            <td style="font-family:var(--font-mono);font-size:0.75rem;white-space:nowrap">01/09/25 → 30/06/26</td>
+            <td class="check">✓</td><td class="check">✓</td><td></td><td class="check">✓</td><td class="check">✓</td><td></td>
+          </tr>
+          <tr>
+            <td>Portfolio professionnel HTML/CSS (GitHub Pages)</td>
+            <td style="font-family:var(--font-mono);font-size:0.75rem;white-space:nowrap">01/09/25 → 30/06/26</td>
+            <td></td><td></td><td class="check">✓</td><td></td><td></td><td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Stage Worldline — Déploiement/config postes</td>
+            <td style="font-family:var(--font-mono);font-size:0.75rem;white-space:nowrap">01/06/26 → 03/07/26</td>
+            <td class="check">✓</td><td></td><td></td><td></td><td class="check">✓</td><td></td>
+          </tr>
+          <tr>
+            <td>Stage Worldline — Support &amp; gestion incidents</td>
+            <td style="font-family:var(--font-mono);font-size:0.75rem;white-space:nowrap">01/06/26 → 03/07/26</td>
+            <td class="check">✓</td><td class="check">✓</td><td></td><td></td><td class="check">✓</td><td></td>
+          </tr>
+          <tr>
+            <td>Stage Worldline — Préparation salle MTR</td>
+            <td style="font-family:var(--font-mono);font-size:0.75rem;white-space:nowrap">01/06/26 → 03/07/26</td>
+            <td class="check">✓</td><td class="check">✓</td><td></td><td class="check">✓</td><td class="check">✓</td><td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.75rem;color:var(--fg2);margin-top:12px;font-family:var(--font-mono)">
+      C=Gérer patrimoine · D=Répondre incidents · E=Présence en ligne · F=Mode projet · G=Mettre à disposition · H=Développement professionnel
+    </p>
+  </div>
+</section>
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  </script>
+<!-- ── CONTACT ─────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="container reveal">
+    <p class="section-eyebrow">// 06 — Contact</p>
+    <h2 class="section-title">Me contacter</h2>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-item">
+          <div class="contact-icon">✉</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-value">amine.zerouati2006@gmail.com</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">⌥</div>
+          <div>
+            <div class="contact-label">GitHub</div>
+            <div class="contact-value"><a href="https://github.com/Amine-Zerouati" target="_blank" rel="noopener">github.com/Amine-Zerouati</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">◎</div>
+          <div>
+            <div class="contact-label">Portfolio</div>
+            <div class="contact-value"><a href="https://amine-zerouati.github.io/Port-folio" target="_blank" rel="noopener">amine-zerouati.github.io/Port-folio</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">◉</div>
+          <div>
+            <div class="contact-label">Localisation</div>
+            <div class="contact-value">Longpont-sur-Orge, Essonne</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;">
+        <p style="font-size:0.9rem;color:var(--fg2);line-height:1.7;margin-bottom:16px;">
+          Actuellement en 2ème année de BTS SIO SISR, je suis à la recherche d'opportunités de stage ou d'alternance dans le domaine des réseaux et de l'administration système.
+        </p>
+        <p style="font-size:0.85rem;color:var(--fg2);line-height:1.7;">
+          N'hésitez pas à me contacter par email ou via GitHub.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
-</body>
-</html>
+<!-- ── FOOTER ──────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <p>© 2026 <span>Amine Zerouati</span> — BTS SIO SISR · Lycée Parc de Vilgénis, Massy</p>
+  </div>
+</footer>
+
+<script>
+  // Theme toggle
+  function toggleTheme() {
+    const root = document.documentElement;
+    const current = root.getAttribute('data-theme');
+    if (current === 'light') {
+      root.removeAttribute('data-theme');
+    } else if (!current) {
+      root.setAttribute('data-theme', 'dark');
+    } else {
+      root.setAttribute('data-theme', 'light');
+    }
+  }
+
+  // Counter animation
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.count, 10);
+    const duration = 1200;
+    const start = performance.now();
+    function step(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(ease * target);
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Scroll reveal + counters on hero visible
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Counters on page load
+  const heroObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        document.querySelectorAll('[data-count]').forEach(animateCounter);
+        heroObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  const statsGrid = document.querySelector('.stats-grid');
+  if (statsGrid) heroObs.observe(statsGrid);
+</script>
+
+</body></html>
